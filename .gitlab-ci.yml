@@ -1,0 +1,26 @@
+stages:
+  - lint
+  - test
+
+lint with black:
+  stage: lint
+  tags:
+    - test-runner
+  image: python:3.10-alpine
+  script:
+    - python --version # For debugging
+    - pip install black
+    - black .
+    - black --check .
+
+test:
+  tags:
+    - test-runner
+  stage: test
+  image: python:3.10-alpine
+  before_script:
+    - apk add build-base linux-headers
+  script:
+    - echo "Define test script here"
+    - pip install -r requirements.txt
+    - pytest tests
