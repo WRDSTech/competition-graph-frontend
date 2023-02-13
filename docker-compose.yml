@@ -1,0 +1,8 @@
+version: "3"
+services:
+  nginx:
+    image: stevelan1995/10k-viewer-frontend:1.0.0
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
