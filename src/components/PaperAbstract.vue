@@ -1,11 +1,12 @@
 <template>
   <div class="hello">
-    <h3>Form 10-K Itemization</h3>
+    <h3>Company Relation Graph</h3>
     <!-- <h3 style="position: absolute; top: 30%; left: 43%">Form 10-K Itemization</h3> -->
-    <p>
-      <i>Yanci Zhang, Mengjia Xia, Mingyang Li, Haitao Mao, Yutong Lu, Yupeng Lan, Jinlin Ye, Rui Dai∗</i>
+    <p class="intro">
+      <!-- <i>Yanci Zhang, Mengjia Xia, Mingyang Li, Haitao Mao, Yutong Lu, Yupeng Lan, Jinlin Ye, Rui Dai∗</i> -->
+      View company relations in a graph
     </p>
-    <el-row>
+    <!-- <el-row>
       <el-col>
         <p>Form 10-K report is a financial report disclosing the annual financial state of a public company. It is an important
         evidence to conduct financial analysis, i.e., asset pricing, corporate finance.
@@ -18,33 +19,34 @@
         develop a Form 10-K Itemization system which can automatically segment all the Item sections in 10-K documents. The
         system is both effective and efficient. It reaches a retrieval rate of 93%.</p>
       </el-col>
-    </el-row>
-    <el-row>
-      <el-col><el-button type="primary" @click="$router.push('sample-form')"><b>Try it out!</b></el-button></el-col>
-    </el-row>
+    </el-row> -->
+    <el-button type="primary" @click="$router.push('company-graph')"><b>Try it out!</b></el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PaperAbstract',
-  methods: {
-    handleClick () { this.$router.push('/sample-form') }
-  }
+  name: 'PaperAbstract'
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 h3 {
-  margin: 0;
+  margin-top: 10%;
   text-align: center;
   font-size: 1.4vw;
 }
+
 p {
   text-align: left;
   font-size: 1.1vw;
 }
+
+.intro {
+  text-align: center;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -61,7 +63,7 @@ a {
 
 button {
   position: relative;
-  top: 20%;
+  margin-top: 5%;
 }
 
 button span b {

@@ -1,5 +1,7 @@
 <template>
-  <v-chart class="chart" :option="option" />
+  <div class="chart-container">
+    <v-chart class="chart" :option="option" />
+  </div>
 </template>
 
 <script>
@@ -58,13 +60,13 @@ export default defineComponent({
     }
   },
   setup () {
-    console.log(this)
     const option = ref({
+      backgroundColor: 'rgb(40, 44, 52)',
       title: {
-        text: 'Les Miserables',
-        subtext: 'Default layout',
+        text: 'Company Relations',
+        subtext: 'See how companies relate with each other',
         top: 'top',
-        left: 'right'
+        left: 'center'
       },
       tooltip: {},
       // legend: [{
@@ -127,7 +129,12 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.chart-container {
+  flex: 1;
+  margin-bottom: 5px;
+}
+
 .chart {
-  height: 100vh;
+  height: 75vh;
 }
 </style>

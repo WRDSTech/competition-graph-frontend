@@ -11,31 +11,31 @@ const routes = [
     component: Home
   },
   {
-    path: '/sample-form',
-    name: 'SampleForm',
+    path: '/company-graph',
+    name: 'CompanyGraph',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "sampleForm" */ '../views/SampleForm.vue')
-  },
-  {
-    path: '/view-form/:ticker',
-    name: 'FormReader',
-    props: true,
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "formReader" */ '../views/FormReader.vue')
-  },
-  {
-    path: '/view-form',
-    name: 'FormReaderByURL',
-    props: true,
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "formReaderByURL" */ '../views/FormReader.vue')
+    component: () => import(/* webpackChunkName: "companyGraph" */ '../views/CompanyRelations.vue')
   }
+  // {
+  //   path: '/view-form/:ticker',
+  //   name: 'FormReader',
+  //   props: true,
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "formReader" */ '../views/FormReader.vue')
+  // },
+  // {
+  //   path: '/view-form',
+  //   name: 'FormReaderByURL',
+  //   props: true,
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "formReaderByURL" */ '../views/FormReader.vue')
+  // }
 ]
 
 const router = new VueRouter({
