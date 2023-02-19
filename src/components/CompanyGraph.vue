@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <v-chart class="chart" :option="option" />
+    <v-chart class="chart" :option="chart" />
   </div>
 </template>
 
@@ -15,7 +15,8 @@ import {
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, defineComponent } from 'vue'
-import sampleData from '@/assets/data/sample.json'
+import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
+import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
 
 use([
   CanvasRenderer,
@@ -27,8 +28,6 @@ use([
 
 // const sampleData = await fetch('/data/sample.json').catch()
 
-console.log(sampleData)
-
 export default defineComponent({
   name: 'CompanyGraph',
   components: {
@@ -39,6 +38,8 @@ export default defineComponent({
   },
   data () {
     return {
+      dow30SampleGraph,
+      sp500SampleGraph,
       nodes: [{
         name: 'Node 1'
       }, {
@@ -56,10 +57,15 @@ export default defineComponent({
       }, {
         source: 1,
         target: 2
-      }]
+      }],
+      chart: null
     }
   },
-  setup () {
+  created () {
+    console.log(this.sp500SampleGraph.nodes)
+    const nodes = this.sp500SampleGraph.nodes
+    const links = this.sp500SampleGraph.links
+
     const option = ref({
       backgroundColor: 'rgb(40, 44, 52)',
       title: {
@@ -88,21 +94,9 @@ export default defineComponent({
             edgeLength: 240, // 边的两个节点之间的距离
             layoutAnimation: false // 显示布局的迭代动画
           },
-          edgeSymbol: ['none', 'arrow'],
-          data: [{
-            name: 'Node 1'
-          }, {
-            name: 'Node 2'
-          }, {
-            name: 'Node 3'
-          }],
-          links: [{
-            source: 0,
-            target: 1
-          }, {
-            source: 1,
-            target: 2
-          }],
+          edgeSymbol: ['none', 'none'],
+          data: nodes,
+          links,
           // categories: sampleData.categories,
           roam: true,
           label: {
@@ -123,7 +117,7 @@ export default defineComponent({
       ]
     })
 
-    return { option }
+    this.chart = option
   }
 })
 </script>
