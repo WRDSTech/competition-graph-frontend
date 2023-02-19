@@ -1,6 +1,6 @@
 
 // const CompressionPlugin = require('compression-webpack-plugin')
-const zlib = require("zlib");
+const zlib = require('zlib')
 const productionGzipExtensions = /\.(js|css|json|txt|html|ico|svg)(\?.*)?$/i
 
 // const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
@@ -14,23 +14,23 @@ module.exports = {
     : '/',
   productionSourceMap: false,
   pluginOptions: {
-    compression:{
+    compression: {
       brotli: {
         filename: '[file].br[query]',
         algorithm: 'brotliCompress',
         include: /\.(js|css|html|svg|json)(\?.*)?$/i,
         compressionOptions: {
           params: {
-            [zlib.constants.BROTLI_PARAM_QUALITY]: 11,
-          },
+            [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+          }
         },
-        minRatio: 0.8,
+        minRatio: 0.8
       },
       gzip: {
         filename: '[file].gz[query]',
         algorithm: 'gzip',
         include: /\.(js|css|html|svg|json)(\?.*)?$/i,
-        minRatio: 0.8,
+        minRatio: 0.8
       }
     }
   },

@@ -40,31 +40,35 @@ export default defineComponent({
     return {
       dow30SampleGraph,
       sp500SampleGraph,
-      nodes: [{
-        name: 'Node 1'
-      }, {
-        name: 'Node 2',
-        x: 200,
-        y: 200
-      }, {
-        name: 'Node 3',
-        x: 300,
-        y: 300
-      }],
-      edges: [{
-        source: 0,
-        target: 1
-      }, {
-        source: 1,
-        target: 2
-      }],
+      edgeColors: [
+        { name: 'competition', color: 'red' },
+        { name: 'unknown', color: 'lightgrey' }
+      ],
+      edgeColorMap: {
+        unknown: 'lightgrey',
+        competition: 'red'
+      },
       chart: null
     }
   },
   created () {
     console.log(this.sp500SampleGraph.nodes)
     const nodes = this.sp500SampleGraph.nodes
-    const links = this.sp500SampleGraph.links
+    const links = this.sp500SampleGraph.links.map(link => {
+      return {
+        id: link.id,
+        category: link.category,
+        source: link.source,
+        target: link.target,
+        lineStyle: {
+          color: this.edgeColorMap[link.category],
+          width: 2
+        },
+        label: {
+          color: this.edgeColorMap[link.category]
+        }
+      }
+    })
 
     const option = ref({
       backgroundColor: 'rgb(40, 44, 52)',
@@ -100,8 +104,18 @@ export default defineComponent({
           // categories: sampleData.categories,
           roam: true,
           label: {
+            show: true,
             position: 'right',
             formatter: '{b}'
+          },
+          edgeLabel: { // 边的设置
+            show: true,
+            position: 'middle',
+            fontSize: 12,
+            formatter: (params) => {
+              // console.log(params)
+              return params.data.category
+            }
           },
           lineStyle: {
             color: 'source',
