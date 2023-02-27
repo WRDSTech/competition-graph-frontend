@@ -40,6 +40,10 @@ export default defineComponent({
     return {
       dow30SampleGraph,
       sp500SampleGraph,
+      defaultGraphs: {
+        SP500: sp500SampleGraph,
+        DOW30: dow30SampleGraph
+      },
       edgeColors: [
         { name: 'competition', color: 'red' },
         { name: 'unknown', color: 'lightgrey' }
@@ -52,9 +56,16 @@ export default defineComponent({
     }
   },
   created () {
-    console.log(this.sp500SampleGraph.nodes)
-    const nodes = this.sp500SampleGraph.nodes
-    const links = this.sp500SampleGraph.links.map(link => {
+    let graphType = this.$route.params.graphType
+    graphType = graphType && this.defaultGraphs[graphType]
+      ? this.$route.params.graphType
+      : 'DOW30'
+
+    let useGraph = this.defaultGraphs.dow30
+    useGraph = this.defaultGraphs[graphType]
+
+    const nodes = useGraph.nodes
+    const links = useGraph.links.map(link => {
       return {
         id: link.id,
         category: link.category,
