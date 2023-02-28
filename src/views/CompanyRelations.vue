@@ -1,6 +1,6 @@
 <template>
   <div class="relation-graph">
-    <h3>{{ title }}</h3>
+    <h3>{{ title.toUpperCase() }}</h3>
     <CompanyGraph />
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
   },
   mounted () {
     if (this.$route.params.graphType) {
-      this.title = `${this.$route.params.graphType} Company Relations`
+      this.title = `${this.$route.params.graphType} Company Competition Graph`
     }
   },
   methods: {},
