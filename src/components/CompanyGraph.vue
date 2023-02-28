@@ -42,19 +42,75 @@ export default defineComponent({
       sp500SampleGraph,
       edgeColors: [
         { name: 'competition', color: 'red' },
-        { name: 'unknown', color: 'lightgrey' }
+        { name: 'unknown', color: 'black' }
       ],
       edgeColorMap: {
         unknown: 'lightgrey',
-        competition: 'red'
+        other: 'lightgrey',
+        competition: 'black'
       },
-      chart: null
+      chart: null,
+      toEmphasize: [
+        'MSFT', 'ZOOM', 'INTC', 'IBM', 'CSCO'
+      ]
     }
   },
   created () {
-    console.log(this.sp500SampleGraph.nodes)
-    const nodes = this.sp500SampleGraph.nodes
-    const links = this.sp500SampleGraph.links.map(link => {
+    // console.log(this.sp500SampleGraph.nodes)
+    const useGraph = this.dow30SampleGraph
+    const nodeLinks = useGraph.links.sort((a, b) => {
+      const sourceIdA = parseInt(a.source)
+      const sourceIdB = parseInt(b.source)
+
+      if (sourceIdA < sourceIdB) {
+        return -1
+      } else if (sourceIdA > sourceIdB) {
+        return 1
+      } else {
+        return 0
+      }
+    })
+    // console.log(nodeLinks)
+    const linkCount = {}
+    nodeLinks.forEach(link => {
+      if (!linkCount[link.source]) {
+        linkCount[link.source] = 1
+      } else {
+        linkCount[link.source] += 1
+      }
+    })
+    console.log(linkCount)
+    const nodes = useGraph.nodes.map(node => {
+      let size = 10
+
+      if (linkCount[node.id] > 10) {
+        size = linkCount[node.id]
+      }
+      if (this.toEmphasize.includes(node.name)) {
+        return {
+          id: node.id,
+          name: node.name,
+          symbolSize: size,
+          emphasized: true,
+          itemStyle: {
+            borderWidth: 4,
+            borderColor: 'red'
+          },
+          label: {
+            fontSize: '18px',
+            fontWeight: 'bolder'
+          }
+        }
+      } else {
+        return {
+          id: node.id,
+          name: node.name,
+          symbolSize: size
+        }
+      }
+    })
+    // const nodes = useGraph.nodes
+    const links = useGraph.links.map(link => {
       return {
         id: link.id,
         category: link.category,
@@ -71,12 +127,14 @@ export default defineComponent({
     })
 
     const option = ref({
-      backgroundColor: 'rgb(40, 44, 52)',
+      // backgroundColor: '#FAFAEB',
+      backgroundColor: '#fff',
       title: {
         text: 'Company Relations',
         subtext: 'See how companies relate with each other',
         top: 'top',
-        left: 'center'
+        left: 'center',
+        color: '#000'
       },
       tooltip: {},
       // legend: [{
@@ -104,6 +162,7 @@ export default defineComponent({
           // categories: sampleData.categories,
           roam: true,
           label: {
+            color: '#000',
             show: true,
             position: 'right',
             formatter: '{b}'
