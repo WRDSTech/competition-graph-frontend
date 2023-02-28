@@ -40,6 +40,13 @@ module.exports = {
         target: 'http://tenk-backend.ddns.net:8665/',
         changeOrigin: true
       },
+      '^/graph': {
+        target: 'http://tenk-backend.ddns.net:8866/',
+        pathRewrite: {
+          '^/graph': '/'
+        },
+        changeOrigin: true
+      },
       '^https://tenk-filing.s3.amazonaws.com/': {
         target: 'https://tenk-filing.s3.amazonaws.com/',
         changeOrigin: true
