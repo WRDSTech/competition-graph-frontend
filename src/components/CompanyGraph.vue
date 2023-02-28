@@ -26,8 +26,6 @@ use([
   LegendComponent
 ])
 
-// const sampleData = await fetch('/data/sample.json').catch()
-
 export default defineComponent({
   name: 'CompanyGraph',
   components: {
@@ -134,7 +132,6 @@ export default defineComponent({
     })
 
     const option = ref({
-      // backgroundColor: '#FAFAEB',
       backgroundColor: '#fff',
       title: {
         text: 'Company Relations',
@@ -160,7 +157,6 @@ export default defineComponent({
           edgeSymbol: ['none', 'none'],
           data: nodes,
           links,
-          // categories: sampleData.categories,
           roam: true,
           label: {
             color: '#000',
@@ -173,7 +169,6 @@ export default defineComponent({
             position: 'middle',
             fontSize: 12,
             formatter: (params) => {
-              // console.log(params)
               return params.data.category
             }
           },
