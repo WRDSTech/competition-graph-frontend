@@ -40,6 +40,10 @@ export default defineComponent({
     return {
       dow30SampleGraph,
       sp500SampleGraph,
+      defaultGraphs: {
+        SP500: sp500SampleGraph,
+        DOW30: dow30SampleGraph
+      },
       edgeColors: [
         { name: 'competition', color: 'red' },
         { name: 'unknown', color: 'black' }
@@ -56,8 +60,13 @@ export default defineComponent({
     }
   },
   created () {
-    // console.log(this.sp500SampleGraph.nodes)
-    const useGraph = this.dow30SampleGraph
+    let graphType = this.$route.params.graphType
+    graphType = graphType && this.defaultGraphs[graphType]
+      ? this.$route.params.graphType
+      : 'DOW30'
+
+    let useGraph = this.defaultGraphs.dow30
+    useGraph = this.defaultGraphs[graphType]
     const nodeLinks = useGraph.links.sort((a, b) => {
       const sourceIdA = parseInt(a.source)
       const sourceIdB = parseInt(b.source)
@@ -70,7 +79,6 @@ export default defineComponent({
         return 0
       }
     })
-    // console.log(nodeLinks)
     const linkCount = {}
     nodeLinks.forEach(link => {
       if (!linkCount[link.source]) {
@@ -79,7 +87,6 @@ export default defineComponent({
         linkCount[link.source] += 1
       }
     })
-    console.log(linkCount)
     const nodes = useGraph.nodes.map(node => {
       let size = 10
 
@@ -137,12 +144,6 @@ export default defineComponent({
         color: '#000'
       },
       tooltip: {},
-      // legend: [{
-      //   // selectedMode: 'single',
-      //   data: sampleData.categories.map(function (a) {
-      //     return a.name
-      //   })
-      // }],
       animationDuration: 1500,
       animationEasingUpdate: 'quinticInOut',
       series: [

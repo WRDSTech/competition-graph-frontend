@@ -20,7 +20,10 @@
         system is both effective and efficient. It reaches a retrieval rate of 93%.</p>
       </el-col>
     </el-row> -->
-    <el-button type="primary" @click="$router.push('company-graph')"><b>Try it out!</b></el-button>
+    <el-row>
+      <el-button type="primary" @click="$router.push('company-graph/dow30')"><b>Try DOW30 Company Graph!</b></el-button>
+      <el-button type="primary" @click="$router.push('company-graph/sp500')"><b>Try SP500 Company Graph!</b></el-button>
+    </el-row>
   </div>
 </template>
 
