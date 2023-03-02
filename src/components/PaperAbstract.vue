@@ -20,6 +20,9 @@
       </el-col>
     </el-row>
     <el-row>
+      <em>Please be patient when the graph is loading. It may take a while.</em>
+    </el-row>
+    <el-row>
       <el-button type="primary" @click="$router.push('company-graph/dow30')"><b>Try DOW30 Company Graph!</b></el-button>
       <el-button type="primary" @click="$router.push('company-graph/sp500')"><b>Try SP500 Company Graph!</b></el-button>
     </el-row>

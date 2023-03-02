@@ -17,7 +17,7 @@ import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, defineComponent } from 'vue'
 import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
 import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
-import { getCompanyGraph } from '../api/company-graph'
+// import { getCompanyGraph } from '../api/company-graph'
 
 use([
   CanvasRenderer,
@@ -59,12 +59,13 @@ export default defineComponent({
     }
   },
   async created () {
-    const graph = await getCompanyGraph(0, 1000)
+    // const graph = await getCompanyGraph(0, 1000)
+    // const graph = null
     let graphType = this.$route.params.graphType
-    graphType = graphType && this.defaultGraphs[graphType]
+    graphType = graphType && this.defaultGraphs[graphType.toUpperCase()]
       ? this.$route.params.graphType
       : 'DOW30'
-    const useGraph = graph || this.defaultGraphs[graphType]
+    const useGraph = this.defaultGraphs[graphType.toUpperCase()]
 
     const nodeLinks = useGraph.links.sort((a, b) => {
       const sourceIdA = parseInt(a.source)
