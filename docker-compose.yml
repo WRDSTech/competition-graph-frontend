@@ -1,7 +1,7 @@
 version: "3"
 services:
   nginx:
-    image: stevelan1995/company-graph-frontend:1.0.0
+    image: stevelan1995/company-graph-frontend:1.0.1
     restart: always
     ports:
       - "80:80"
