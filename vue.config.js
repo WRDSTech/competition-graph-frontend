@@ -10,7 +10,7 @@ const isProd = ['production', 'prod'].includes(process.env.NODE_ENV)
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
-    ? '/dist'
+    ? '/'
     : '/',
   productionSourceMap: false,
   pluginOptions: {
