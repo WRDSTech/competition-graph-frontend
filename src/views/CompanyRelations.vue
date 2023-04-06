@@ -1,6 +1,7 @@
 <template>
   <div class="relation-graph">
     <h3>{{ title.toUpperCase() }}</h3>
+    <el-input v-model="searchTerm" placeholder="Search for node"></el-input>
     <CompanyGraph />
   </div>
 </template>
@@ -19,7 +20,8 @@ export default {
   component: CompanyGraph,
   data () {
     return {
-      title: ''
+      title: '',
+      searchTerm: ''
     }
   },
   mounted () {
@@ -28,7 +30,28 @@ export default {
     }
   },
   methods: {},
-  components: { CompanyGraph }
+  components: { CompanyGraph },
+  watch: {
+    searchTerm () {
+      const matchingNodes = this.graphData.nodes.filter(
+        node => node.name.includes(this.searchTerm)
+      )
+
+      if (matchingNodes.length > 0) {
+        const nodeIds = matchingNodes.map(node => node.id)
+        this.chart.dispatchAction({
+          type: 'highlight',
+          seriesIndex: 0,
+          nodeIds
+        })
+      } else {
+        this.chart.dispatchAction({
+          type: 'downplay',
+          seriesIndex: 0
+        })
+      }
+    }
+  }
 }
 </script>
 
