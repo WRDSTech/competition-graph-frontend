@@ -17,7 +17,9 @@ import {
   Option,
   Main,
   Divider,
-  Loading
+  Loading,
+  Autocomplete,
+  Checkbox
 } from 'element-ui'
 
 Vue.use(less)
@@ -34,6 +36,8 @@ Vue.use(Option)
 Vue.use(Main)
 Vue.use(Divider)
 Vue.use(Loading)
+Vue.use(Autocomplete)
+Vue.use(Checkbox)
 
 Vue.config.productionTip = false
 
