@@ -6,7 +6,7 @@
                 <div class="main-logo">
                     <div class="row">
                         <div class="col-sm-2 col-md-6">
-                            <a href="/" title="WRDS PaperAbstract"><img src="/common/img/wrds_logo.98ee7f3b.svg" alt="Wharton wrds Logo" /></a>
+                            <a href="/" title="WRDS PaperAbstract"><img src="@/assets/wrds_logo.svg" alt="Wharton wrds Logo" /></a>
                         </div>
                     </div>
                 </div>

@@ -66,16 +66,6 @@ export default defineComponent({
       }
     }
   },
-  methods: {
-    handleChartReady (chartInstance) {
-      chartInstance.on('click', this.handleNodeClick)
-      console.log(1)
-    },
-    handleNodeClick (params) {
-      // Handle the node click event here
-      console.log('Node clicked:', params.data)
-    }
-  },
   data () {
     return {
       dow30SampleGraph,
@@ -187,7 +177,7 @@ export default defineComponent({
         color: '#000'
       },
       tooltip: {},
-      animationDuration: 150,
+      animationDuration: 1500,
       animationEasingUpdate: 'quinticInOut',
       series: [
         {
@@ -234,20 +224,7 @@ export default defineComponent({
     })
 
     this.chart = option
-    // this.chart.on('click', (params) => {
-    //   // Handle the node click event here
-    //   console.log('Node clicked:', params)
-    // })
-  },
-  mounted () {
-    this.$nextTick(() => {
-      const vchart = this.$refs.vchart
-      vchart.chart.on('click', this.handleNodeClick)
-    })
   }
-  // mounted () {
-  //   const vchart = this.$refs.vchart
-  // }
 })
 </script>
 
