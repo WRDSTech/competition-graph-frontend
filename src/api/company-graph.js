@@ -4,9 +4,10 @@
 
 // const COMPANY_GRAPH_API = '/graph/api/comp/surrounding'
 
-const COMPANY_GRAPH_API = 'http://localhost:8000/api/comp/surrounding'
+const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
 export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unkown) {
   try {
+    console.log(`${COMPANY_GRAPH_API}?node_id=${nodeId}&expand_number_of_layers=${expandLayers}`)
     const response = await fetch(`${COMPANY_GRAPH_API}?node_id=${nodeId}&expand_number_of_layers=${expandLayers}`)
     // const response = await fetch(`${COMPANY_GRAPH_API}`)
     const data = await response.json()

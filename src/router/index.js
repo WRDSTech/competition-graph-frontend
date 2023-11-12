@@ -12,7 +12,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/company-graph/:graphType/:',
+    path: '/company-graph/:graphType',
     name: 'CompanyGraph',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

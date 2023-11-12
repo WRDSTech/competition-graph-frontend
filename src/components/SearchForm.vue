@@ -7,7 +7,7 @@
         <el-autocomplete
           class="inline-input"
           v-model="form.companyName"
-          placeholder="(hardcoded autocomplete)Please enter a company name or ticker, e.g. MSFT"
+          placeholder="Please enter a company name or ticker, e.g. MSFT"
           :fetch-suggestions="querySearch"
           :trigger-on-focus="false"
           @select="handleSelect"
