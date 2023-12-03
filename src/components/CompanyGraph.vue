@@ -1,6 +1,19 @@
 <template>
   <div class="chart-container">
-    <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input>
+    <div class="search__container">
+      <!-- nollie add this -->
+      <input class="search__input" v-model="searchTerm" type="search" placeholder="Search">
+      <!-- <el-autocomplete
+          class="search__input"
+          v-model="form.companyName"
+          placeholder="Please enter a company name or ticker, e.g. MSFT"
+          :fetch-suggestions="querySearch"
+          :trigger-on-focus="false"
+          @select="handleSelect"
+        ></el-autocomplete> -->
+    </div>
+    <!-- the original one -->
+    <!-- <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input> -->
     <v-chart ref="vchart" class="chart" :option="chart" />
   </div>
 </template>
@@ -19,6 +32,8 @@ import { ref, defineComponent } from 'vue'
 import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
 import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
 // import { getCompanyGraph } from '../api/company-graph'
+import { Autocomplete } from 'element-ui'
+import companyNames from '@/assets/data/company_name.json'
 
 use([
   CanvasRenderer,
@@ -31,7 +46,8 @@ use([
 export default defineComponent({
   name: 'CompanyGraph',
   components: {
-    VChart
+    VChart,
+    Autocomplete
   },
   provide: {
     [THEME_KEY]: 'dark'
@@ -74,6 +90,37 @@ export default defineComponent({
     handleNodeClick (params) {
       // Handle the node click event here
       console.log('Node clicked:', params.data)
+    },
+    querySearch (queryString, cb) {
+      var restaurants = this.companyNameSuggest
+      var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+      // 调用 callback 返回建议列表的数据
+      cb(results)
+    },
+    searchId (name) {
+      const data = companyNames
+      let id = 0
+      data.forEach(element => {
+        if (element.value === name) {
+          id = element.id
+        }
+      })
+      return id
+    },
+    createFilter (queryString) {
+      return (restaurant) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    loadAll () {
+      return companyNames
+    },
+    handleSelect (item) {
+      console.log(item)
+    },
+    mounted () {
+      this.companyNameSuggest = this.loadAll()
+      console.log(this.companyNameSuggest)
     }
   },
   data () {
@@ -98,10 +145,21 @@ export default defineComponent({
       chart: null,
       toEmphasize: [
         'MSFT', 'ZOOM', 'INTC', 'IBM', 'CSCO'
-      ]
+      ],
+      companyNameSuggest: [],
+      form: {
+        companyName: '',
+        lays: '',
+        checkCompete: true,
+        checkProd: true,
+        unkown: true,
+        other: true
+      }
     }
   },
   async created () {
+    this.companyNameSuggest = this.loadAll()
+    console.log(this.companyNameSuggest)
     // const graph = await getCompanyGraph(0, 1000)
     // const graph = null
     let graphType = this.$route.params.graphType
@@ -264,5 +322,41 @@ export default defineComponent({
 .graphSearch {
   width: 20%;
   padding-bottom: 10px;
+}
+
+/* nollie from here */
+.search__input::placeholder {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.search__container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 20px;
+  font-size: 80%;
+}
+.search__input {
+  width: 15rem;
+  padding: 9.6px 19.2px;
+  transition: transform 250ms ease-in-out, box-shadow 250ms ease-in-out;
+  font-size: 12px;
+  line-height: 15px;
+  color: #575756;
+  background-color: white;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  background-position: 5% center;
+  border-radius: 50px;
+  border: none;
+  border-bottom: 2px solid rgb(217, 192, 175);
+  box-shadow: 0 0 5px rgba(228, 181, 181, 0.2);
+  transition: all 250ms ease-in-out;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  text-indent: 15px;
 }
 </style>
