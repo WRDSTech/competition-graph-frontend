@@ -50,8 +50,19 @@ export default defineComponent({
         vchart.dispatchAction({
           type: 'highlight',
           seriesIndex: 0,
-          nodeIds
+          dataIndex: nodeIds
         })
+        // vchart.dispatchAction({
+        //   type: 'dataZoom',
+        //   dataZoomIndex: nodeIds[0],
+        //   startValue: 30,
+        //   endValue: 70
+        // })
+        // vchart.dispatchAction({
+        //   type: 'focusNodeAdjacency',
+        //   seriesIndex: 0,
+        //   dataIndex: nodeIds[0]
+        // })
         // vchart.dispatchAction({
         //   type: 'dataZoom',
         //   dataZoomId: 'dataZoomX',
