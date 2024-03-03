@@ -3,17 +3,13 @@
     <div class="search__container">
       <!-- nollie add this -->
       <input class="search__input" v-model="searchTerm" type="search" placeholder="Search">
-      <!-- <el-autocomplete
-          class="search__input"
-          v-model="form.companyName"
-          placeholder="Please enter a company name or ticker, e.g. MSFT"
-          :fetch-suggestions="querySearch"
-          :trigger-on-focus="false"
-          @select="handleSelect"
-        ></el-autocomplete> -->
     </div>
     <!-- the original one -->
     <!-- <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input> -->
+    <div class="toggle-container" v-if="currentPage != 'DOW30'">
+      <button class="toggle-btn" :class="{ active: !isPartialGraph }" @click="showWholeGraph">Whole Graph</button>
+      <button class="toggle-btn" :class="{ active: isPartialGraph }" @click="showPartialGraph">Partial Graph</button>
+    </div>
     <v-chart ref="vchart" class="chart" :option="chart" />
   </div>
 </template>
@@ -121,7 +117,30 @@ export default defineComponent({
     mounted () {
       this.companyNameSuggest = this.loadAll()
       console.log(this.companyNameSuggest)
+    },
+    showWholeGraph () {
+      this.isPartialGraph = false
+      // Logic to display the whole graph
+      this.updateGraphView('whole')
+    },
+    showPartialGraph () {
+      this.isPartialGraph = true
+      // Logic to display the partial graph
+      this.updateGraphView('partial')
+    },
+    async updateGraphView (viewType) {
+      if (viewType === 'partial') {
+        try {
+          // call API to fetch partial graph data
+        } catch (error) {
+          console.error('Error fetching partial graph data:', error)
+        }
+      } else if (viewType === 'whole') {
+        // Reset to whole graph data, assuming `useGraph` holds the whole graph data
+      }
+      console.log(`${viewType} graph view is currently active`)
     }
+
   },
   data () {
     return {
@@ -154,11 +173,14 @@ export default defineComponent({
         checkProd: true,
         unkown: true,
         other: true
-      }
+      },
+      isPartialGraph: true,
+      currentPage: ''
     }
   },
   async created () {
     this.companyNameSuggest = this.loadAll()
+    this.currentPage = this.$route.params.graphType.toUpperCase()
     console.log(this.companyNameSuggest)
     // const graph = await getCompanyGraph(0, 1000)
     // const graph = null
@@ -358,5 +380,27 @@ export default defineComponent({
   backface-visibility: hidden;
   transform-style: preserve-3d;
   text-indent: 15px;
+}
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-btn {
+  padding: 10px 20px;
+  border: 2px solid #2196F3;
+  background-color: #333;
+  color: white;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-btn.active {
+    background-color: #2196F3;
 }
 </style>
