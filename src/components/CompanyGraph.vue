@@ -32,9 +32,6 @@ import { getDow30Graph, getSP500Graph } from '@/api/company-graph'
 import { Autocomplete } from 'element-ui'
 import companyNames from '@/assets/data/company_name.json'
 
-const dow30SampleGraph = getDow30Graph()
-const sp500SampleGraph = getSP500Graph()
-
 use([
   CanvasRenderer,
   GraphChart,
@@ -148,12 +145,10 @@ export default defineComponent({
   },
   data () {
     return {
-      dow30SampleGraph,
-      sp500SampleGraph,
       searchTerm: '',
       defaultGraphs: {
-        SP500: sp500SampleGraph,
-        DOW30: dow30SampleGraph
+        SP500: null,
+        DOW30: null
       },
       useGraph: null,
       edgeColors: [
@@ -192,8 +187,10 @@ export default defineComponent({
     graphType = graphType && this.defaultGraphs[graphType.toUpperCase()]
       ? this.$route.params.graphType
       : 'DOW30'
-    const fetchData = this.defaultGraphs[graphType] // This should be a function.
-    const useGraph = await fetchData() // bug bug bug
+
+    this.defaultGraphs.SP500 = await getSP500Graph()
+    this.defaultGraphs.DOW30 = await getDow30Graph()
+    const useGraph = this.defaultGraphs[graphType] // This should be a function.
     this.useGraph = useGraph
 
     const nodeLinks = useGraph.links.sort((a, b) => {
