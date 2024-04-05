@@ -25,11 +25,15 @@ import {
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, defineComponent } from 'vue'
-import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
-import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
+import { getDow30Graph, getSP500Graph } from '@/api/company-graph'
+// import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
+// import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
 // import { getCompanyGraph } from '../api/company-graph'
 import { Autocomplete } from 'element-ui'
 import companyNames from '@/assets/data/company_name.json'
+
+const dow30SampleGraph = getDow30Graph()
+const sp500SampleGraph = getSP500Graph()
 
 use([
   CanvasRenderer,
@@ -188,7 +192,8 @@ export default defineComponent({
     graphType = graphType && this.defaultGraphs[graphType.toUpperCase()]
       ? this.$route.params.graphType
       : 'DOW30'
-    const useGraph = this.defaultGraphs[graphType.toUpperCase()]
+    const fetchData = this.defaultGraphs[graphType] // This should be a function.
+    const useGraph = await fetchData() // bug bug bug
     this.useGraph = useGraph
 
     const nodeLinks = useGraph.links.sort((a, b) => {
