@@ -2,8 +2,6 @@
  * Get Graph /api/comp/surrounding
  */
 
-// const COMPANY_GRAPH_API = '/graph/api/comp/surrounding'
-
 // const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
 const COMPANY_GRAPH_API = 'http://localhost:8000/api/comp'
 export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unknown) {
@@ -40,6 +38,16 @@ export async function getDow30Graph () {
 export async function getSP500Graph () {
   try {
     const response = await fetch(`${COMPANY_GRAPH_API}/sp500`)
+    const data = await response.json()
+    return data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function sampleGraph () {
+  try {
+    const response = await fetch(`${COMPANY_GRAPH_API}/sample`)
     const data = await response.json()
     return data
   } catch (e) {
