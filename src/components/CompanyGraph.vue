@@ -25,7 +25,8 @@ import {
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, defineComponent } from 'vue'
-import { getDow30Graph, getSP500Graph } from '@/api/company-graph'
+import { getDow30Graph, sampleGraph } from '@/api/company-graph'
+// getSP500Graph
 // import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
 // import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
 // import { getCompanyGraph } from '../api/company-graph'
@@ -148,7 +149,8 @@ export default defineComponent({
       searchTerm: '',
       defaultGraphs: {
         SP500: null,
-        DOW30: null
+        DOW30: null,
+        sample: null
       },
       useGraph: null,
       edgeColors: [
@@ -179,19 +181,23 @@ export default defineComponent({
   },
   async created () {
     this.companyNameSuggest = this.loadAll()
+    console.log('This is company name suggest', this.companyNameSuggest)
     this.currentPage = this.$route.params.graphType.toUpperCase()
     console.log(this.companyNameSuggest)
     // const graph = await getCompanyGraph(0, 1000)
     // const graph = null
     let graphType = this.$route.params.graphType
+    console.log(graphType)
     graphType = graphType && this.defaultGraphs[graphType.toUpperCase()]
       ? this.$route.params.graphType
       : 'DOW30'
 
-    this.defaultGraphs.SP500 = await getSP500Graph()
+    this.defaultGraphs.SP500 = await sampleGraph()
     this.defaultGraphs.DOW30 = await getDow30Graph()
-    const useGraph = this.defaultGraphs[graphType] // This should be a function.
+    const useGraph = this.defaultGraphs.SP500 // This should be a function.IF you gusy want ot use thisGraph route
     this.useGraph = useGraph
+    console.log('THIS IS USEGRAPH' + useGraph)
+    console.log('This is deafult sp500', this.defaultGraphs.SP500)
 
     const nodeLinks = useGraph.links.sort((a, b) => {
       const sourceIdA = parseInt(a.source)
