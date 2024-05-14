@@ -1,10 +1,8 @@
 <template>
   <div class="chart-container">
     <div class="search__container">
-      <!-- nollie add this -->
       <input class="search__input" v-model="searchTerm" type="search" placeholder="Search">
     </div>
-    <!-- the original one -->
     <div class="toggle-container" v-if="currentPage != 'DOW30'">
       <button class="toggle-btn" :class="{ active: !isPartialGraph }" @click="showWholeGraph">Whole Graph</button>
       <button class="toggle-btn" :class="{ active: isPartialGraph }" @click="showPartialGraph">Partial Graph</button>
@@ -50,7 +48,6 @@ export default defineComponent({
       const matchingNodes = this.useGraph.nodes.filter(
         node => node.name === this.searchTerm
       )
-      console.log(matchingNodes)
       const vchart = this.$refs.vchart
 
       if (matchingNodes.length > 0) {
@@ -71,7 +68,6 @@ export default defineComponent({
   methods: {
     handleChartReady (chartInstance) {
       chartInstance.on('click', this.handleNodeClick)
-      console.log(1)
     },
     handleNodeClick (params) {
       // Handle the node click event here
@@ -127,8 +123,7 @@ export default defineComponent({
           console.error('Error fetching partial graph data:', error)
         }
       } else if (viewType === 'whole') {
-        const wholeGraph = await getSP500Graph()
-        this.useGraph = wholeGraph
+        this.useGraph = this.wholeGraphData
         this.updateChart()
         console.log('wholeGraph:', this.useGraph)
         console.log(`${viewType} graph view is currently active`)
@@ -215,6 +210,7 @@ export default defineComponent({
         sample: null
       },
       useGraph: null,
+      wholeGraphData: null,
       edgeColors: [
         { name: 'competition', color: 'red' },
         { name: 'unknown', color: 'black' }
@@ -254,6 +250,7 @@ export default defineComponent({
 
     this.defaultGraphs.SP500 = await sampleGraph()
     this.defaultGraphs.DOW30 = await getDow30Graph()
+    this.wholeGraphData = await getSP500Graph() // Fetch the whole graph data in advance
     const useGraph = this.defaultGraphs.SP500
     this.useGraph = useGraph
     console.log('THIS IS USEGRAPH' + useGraph)
