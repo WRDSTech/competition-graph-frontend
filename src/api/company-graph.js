@@ -2,55 +2,57 @@
  * Get Graph /api/comp/surrounding
  */
 
-// const COMPANY_GRAPH_API = '/graph/api/comp/surrounding'
-
-const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
-export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unkown) {
+// const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
+const COMPANY_GRAPH_API = 'http://localhost:8000/api/comp'
+export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unknown) {
   try {
-    console.log(`${COMPANY_GRAPH_API}?node_id=${nodeId}&expand_number_of_layers=${expandLayers}`)
-    const response = await fetch(`${COMPANY_GRAPH_API}?node_id=${nodeId}&expand_number_of_layers=${expandLayers}`)
-    // const response = await fetch(`${COMPANY_GRAPH_API}`)
+    const response = await fetch(`${COMPANY_GRAPH_API}/surrounding?node_id=${nodeId}&expand_number_of_layers=${expandLayers}&competition=${comp}&product=${prod}&other=${other}&unknown=${unknown}`)
+    console.log(`${COMPANY_GRAPH_API}/surrounding?node_id=${nodeId}&expand_number_of_layers=${expandLayers}&competition=${comp}&product=${prod}&other=${other}&unknown=${unknown}`)
     const data = await response.json()
     const nodeset = new Set()
-    if (data && data.links && data.nodes) {
-      let len = data.links.length
-      for (let i = 0; i < len; i++) {
-        let flag = false
-        if (comp !== 'true' && data.links[i].category === 'competition') {
-          flag = true
-        }
-        if (prod !== 'true' && data.links[i].category === 'prodcut') {
-          flag = true
-        }
-        if (other !== 'true' && data.links[i].category === 'other') {
-          flag = true
-        }
-        if (unkown !== 'true' && data.links[i].category === 'unknown') {
-          flag = true
-        }
-        if (flag) {
-          data.links.splice(i, 1)
-          i = i - 1
-          len = len - 1
-        } else {
-          nodeset.add(data.links[i].source)
-          nodeset.add(data.links[i].target)
-        }
+    let lennode = data.nodes.length
+    for (let i = 0; i < lennode; i++) {
+      if (!nodeset.has(data.nodes[i].id)) {
+        data.nodes.splice(i, 1)
+        i = i - 1
+        lennode = lennode - 1
       }
-      let lennode = data.nodes.length
-      for (let i = 0; i < lennode; i++) {
-        if (!nodeset.has(data.nodes[i].id)) {
-          data.nodes.splice(i, 1)
-          i = i - 1
-          lennode = lennode - 1
-        }
-      }
-
-      return data
-    } else {
-      return null
     }
+    return data
   } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getDow30Graph () {
+  try {
+    const response = await fetch(`${COMPANY_GRAPH_API}/dow30`)
+    const data = await response.json()
+    console.log(data)
+    return data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function getSP500Graph () {
+  try {
+    const response = await fetch(`${COMPANY_GRAPH_API}/sp500`)
+    const data = await response.json()
+    console.log('data sp500 whole', data)
+    return data
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+export async function sampleGraph () {
+  try {
+    const response = await fetch(`${COMPANY_GRAPH_API}/sample`)
+    const data = await response.json()
+    return data
+  } catch (e) {
+    console.log('i am broken')
     console.error(e)
   }
 }
