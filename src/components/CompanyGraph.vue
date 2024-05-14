@@ -5,7 +5,6 @@
       <input class="search__input" v-model="searchTerm" type="search" placeholder="Search">
     </div>
     <!-- the original one -->
-    <!-- <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input> -->
     <div class="toggle-container" v-if="currentPage != 'DOW30'">
       <button class="toggle-btn" :class="{ active: !isPartialGraph }" @click="showWholeGraph">Whole Graph</button>
       <button class="toggle-btn" :class="{ active: isPartialGraph }" @click="showPartialGraph">Partial Graph</button>
@@ -25,11 +24,7 @@ import {
 } from 'echarts/components'
 import VChart, { THEME_KEY } from 'vue-echarts'
 import { ref, defineComponent } from 'vue'
-import { getDow30Graph, sampleGraph } from '@/api/company-graph'
-// getSP500Graph
-// import dow30SampleGraph from '@/assets/data/dow30_relation_backend.json'
-// import sp500SampleGraph from '@/assets/data/sp500_relation_backend.json'
-// import { getCompanyGraph } from '../api/company-graph'
+import { getDow30Graph, sampleGraph, getSP500Graph } from '@/api/company-graph'
 import { Autocomplete } from 'element-ui'
 import companyNames from '@/assets/data/company_name.json'
 
@@ -57,7 +52,6 @@ export default defineComponent({
       )
       console.log(matchingNodes)
       const vchart = this.$refs.vchart
-      // const nodeData = chart.getOption().series[0].data.find(data => data.id === nodeId);
 
       if (matchingNodes.length > 0) {
         const nodeIds = matchingNodes.map(node => node.id)
@@ -66,12 +60,6 @@ export default defineComponent({
           seriesIndex: 0,
           nodeIds
         })
-        // vchart.dispatchAction({
-        //   type: 'dataZoom',
-        //   dataZoomId: 'dataZoomX',
-        //   startValue: xValue - 50, // or any other value that centers the node
-        //   endValue: xValue + 50
-        // })
       } else {
         vchart.dispatchAction({
           type: 'downplay',
@@ -92,7 +80,6 @@ export default defineComponent({
     querySearch (queryString, cb) {
       var restaurants = this.companyNameSuggest
       var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-      // 调用 callback 返回建议列表的数据
       cb(results)
     },
     searchId (name) {
@@ -122,27 +109,102 @@ export default defineComponent({
     },
     showWholeGraph () {
       this.isPartialGraph = false
-      // Logic to display the whole graph
       this.updateGraphView('whole')
     },
     showPartialGraph () {
       this.isPartialGraph = true
-      // Logic to display the partial graph
       this.updateGraphView('partial')
     },
     async updateGraphView (viewType) {
       if (viewType === 'partial') {
         try {
           // call API to fetch partial graph data
+          const partialGraph = await sampleGraph()
+          this.useGraph = partialGraph
+          console.log('Sample Graph:', this.useGraph)
+          this.updateChart()
         } catch (error) {
           console.error('Error fetching partial graph data:', error)
         }
       } else if (viewType === 'whole') {
-        // Reset to whole graph data, assuming `useGraph` holds the whole graph data
+        const wholeGraph = await getSP500Graph()
+        this.useGraph = wholeGraph
+        this.updateChart()
+        console.log('wholeGraph:', this.useGraph)
+        console.log(`${viewType} graph view is currently active`)
       }
-      console.log(`${viewType} graph view is currently active`)
-    }
+    },
+    async updateChart () {
+      const useGraph = this.useGraph
+      const nodeLinks = useGraph.links.sort((a, b) => {
+        const sourceIdA = parseInt(a.source)
+        const sourceIdB = parseInt(b.source)
 
+        if (sourceIdA < sourceIdB) {
+          return -1
+        } else if (sourceIdA > sourceIdB) {
+          return 1
+        } else {
+          return 0
+        }
+      })
+      const linkCount = {}
+      nodeLinks.forEach(link => {
+        if (!linkCount[link.source]) {
+          linkCount[link.source] = 1
+        } else {
+          linkCount[link.source] += 1
+        }
+      })
+      const nodes = useGraph.nodes.map(node => {
+        let size = 10
+
+        if (linkCount[node.id] > 10) {
+          size = linkCount[node.id]
+        }
+        if (this.toEmphasize.includes(node.name)) {
+          return {
+            id: node.id,
+            name: node.name,
+            symbolSize: size,
+            emphasized: true,
+            itemStyle: {
+              borderWidth: 4,
+              borderColor: 'red'
+            },
+            label: {
+              fontSize: '18px',
+              fontWeight: 'bolder'
+            }
+          }
+        } else {
+          return {
+            id: node.id,
+            name: node.name,
+            symbolSize: size
+          }
+        }
+      })
+
+      const links = useGraph.links.map(link => {
+        return {
+          id: link.id,
+          category: link.category,
+          source: link.source,
+          target: link.target,
+          lineStyle: {
+            color: this.edgeColorMap[link.category],
+            width: 2
+          },
+          label: {
+            color: this.edgeColorMap[link.category]
+          }
+        }
+      })
+
+      this.chart.series[0].data = nodes
+      this.chart.series[0].links = links
+    }
   },
   data () {
     return {
@@ -184,8 +246,6 @@ export default defineComponent({
     console.log('This is company name suggest', this.companyNameSuggest)
     this.currentPage = this.$route.params.graphType.toUpperCase()
     console.log(this.companyNameSuggest)
-    // const graph = await getCompanyGraph(0, 1000)
-    // const graph = null
     let graphType = this.$route.params.graphType
     console.log(graphType)
     graphType = graphType && this.defaultGraphs[graphType.toUpperCase()]
@@ -194,7 +254,7 @@ export default defineComponent({
 
     this.defaultGraphs.SP500 = await sampleGraph()
     this.defaultGraphs.DOW30 = await getDow30Graph()
-    const useGraph = this.defaultGraphs.SP500 // This should be a function.IF you gusy want ot use thisGraph route
+    const useGraph = this.defaultGraphs.SP500
     this.useGraph = useGraph
     console.log('THIS IS USEGRAPH' + useGraph)
     console.log('This is deafult sp500', this.defaultGraphs.SP500)
@@ -248,7 +308,7 @@ export default defineComponent({
         }
       }
     })
-    // const nodes = useGraph.nodes
+
     const links = useGraph.links.map(link => {
       return {
         id: link.id,
@@ -322,10 +382,6 @@ export default defineComponent({
     })
 
     this.chart = option
-    // this.chart.on('click', (params) => {
-    //   // Handle the node click event here
-    //   console.log('Node clicked:', params)
-    // })
   },
   mounted () {
     this.$nextTick(() => {
@@ -333,9 +389,6 @@ export default defineComponent({
       vchart.chart.on('click', this.handleNodeClick)
     })
   }
-  // mounted () {
-  //   const vchart = this.$refs.vchart
-  // }
 })
 </script>
 

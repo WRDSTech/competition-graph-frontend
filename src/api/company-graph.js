@@ -3,7 +3,7 @@
  */
 
 // const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
-const COMPANY_GRAPH_API = 'http://localhost:8000/api/comp'
+const COMPANY_GRAPH_API = 'http://localhost:8003/api/comp'
 export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unknown) {
   try {
     const response = await fetch(`${COMPANY_GRAPH_API}/surrounding?node_id=${nodeId}&expand_number_of_layers=${expandLayers}&competition=${comp}&product=${prod}&other=${other}&unknown=${unknown}`)
@@ -39,6 +39,7 @@ export async function getSP500Graph () {
   try {
     const response = await fetch(`${COMPANY_GRAPH_API}/sp500`)
     const data = await response.json()
+    console.log('data sp500 whole', data)
     return data
   } catch (e) {
     console.error(e)
@@ -51,6 +52,7 @@ export async function sampleGraph () {
     const data = await response.json()
     return data
   } catch (e) {
+    console.log('i am broken')
     console.error(e)
   }
 }
