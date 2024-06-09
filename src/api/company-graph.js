@@ -4,7 +4,7 @@
 
 // const COMPANY_GRAPH_API = '/graph/api/comp/surrounding'
 
-const COMPANY_GRAPH_API = 'http://ec2-54-89-51-246.compute-1.amazonaws.com/api'
+const COMPANY_GRAPH_API = 'https://wrds-demo.ddns.net/api'
 export async function getCompanyGraph (nodeId, expandLayers, comp, prod, other, unkown) {
   try {
     console.log(`${COMPANY_GRAPH_API}?node_id=${nodeId}&expand_number_of_layers=${expandLayers}`)
