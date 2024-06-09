@@ -1,16 +1,16 @@
 <template>
-  <div class="main-breadcrumb">
+  <div class ="main-breadcrumb">
     <div class="container">
         <div>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="/" class="breadcrumb-item bc-home"><i class="el-icon-s-home"></i> <span>Home</span></a>
+                    <li class ="breadcrumb-item">
+                        <a href="https://wrds-www.wharton.upenn.edu/" class ="breadcrumb-item bc-home"><i class ="el-icon-s-home"></i> <span>Home</span></a>
                     </li>
                 </ol>
             </nav>
         </div>
-        <div class="bc-right"></div>
+        <div class ="bc-right"></div>
     </div>
 </div>
 
@@ -35,7 +35,6 @@
     margin-bottom: 1rem;
     margin-top: 0;
     list-style: none;
-    background-color: #e9ecef;
     border-radius: 0.25rem;
 }
 li {
@@ -61,6 +60,19 @@ a {
 }
 
 .bc-home {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
+
+@media (max-width: 430px){
+    .bc-home {
+        font-size: 0.8rem;
+    }
+    .main-breadcrumb {
+        height: 30px;
+    }
+    .breadcrumb {
+        padding: 0.2rem
+    }
+}
+
 </style>

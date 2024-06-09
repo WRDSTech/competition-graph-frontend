@@ -6,7 +6,7 @@
                 <div class="main-logo">
                     <div class="row">
                         <div class="col-sm-2 col-md-6">
-                            <a href="/" title="WRDS PaperAbstract"><img src="/common/img/wrds_logo.98ee7f3b.svg" alt="Wharton wrds Logo" /></a>
+                            <a href="https://wrds-www.wharton.upenn.edu/" title="WRDS PaperAbstract"><img src="/common/img/wrds_logo.98ee7f3b.svg" alt="Wharton wrds Logo" /></a>
                         </div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@ export default {
 body .header-nav .top-nav, body.defaultTheme .header-nav .top-nav {
     background: #154281;
     background: linear-gradient(#002C77, #2E55A4);
-    height: 10vh;
+    height: 80px;
 }
 
 .header-nav .main-head {
@@ -159,5 +159,17 @@ img {
 .header-nav .main-head .main-logo img {
     padding-top: 30px;
     width: 400px;
+}
+
+@media (max-width: 430px) {
+    img {
+        vertical-align: middle;
+        border-style: none;
+        width: 200px !important;
+        padding-top: 60% !important;
+    }
+    body .header-nav .top-nav {
+        height: 40px;
+    }
 }
 </style>
