@@ -20,7 +20,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <em>Please be patient when the graph is loading. It may take a while.</em>
+      <em class="notice">Please be patient when the graph is loading. It may take a while.</em>
     </el-row>
     <el-row>
       <el-button type="primary" @click="$router.push('company-graph/dow30')"><b>Try DOW30 Company Graph!</b></el-button>
@@ -39,20 +39,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 h3 {
-  margin-top: 3%;
+  margin: 0;
   text-align: center;
-  font-size: 1.4vw;
+  font-size: 1.5rem !important;
 }
-
-p {
+p notice{
   text-align: left;
-  font-size: 1.1vw;
+  font-size: 1.2rem;
 }
-
-.intro {
-  text-align: center;
-}
-
 ul {
   list-style-type: none;
   padding: 0;
@@ -67,13 +61,12 @@ a {
   display: block;
 }
 
-button {
-  position: relative;
-  margin-top: 5%;
+.el-button {
+    margin-top: 5%;
 }
 
 button span b {
-  font-size: 1.1vw;
+  font-size: 1.2rem;
 }
 
 .mt-2 {
@@ -83,6 +76,52 @@ button span b {
 .paper-link {
   font-size: 1.4rem;
   font-weight: bold;
+}
+
+@media (max-width: 890px){
+  h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.2rem !important;
+  }
+  p notice{
+    text-align: left;
+    font-size: 1rem;
+  }
+  button span b {
+    font-size: 1rem;
+  }
+
+}
+
+@media (max-width: 600px){
+  h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 1rem !important;
+  }
+  p notice{
+    text-align: left;
+    font-size: 0.8rem;
+  }
+  button span b {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 430px){
+  h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 0.85rem !important;
+  }
+  p notice{
+    text-align: left;
+    font-size: 0.7rem;
+  }
+  button span b {
+    font-size: 0.7rem;
+  }
 }
 
 </style>
