@@ -1,7 +1,6 @@
 <template>
+  <!-- <h3 style="padding-top: -30px;">SEARCHED COMPANY RELATIONS</h3> -->
   <div class="chart-container">
-    <h3>Company Relations</h3>
-    <h4>See how companies relate with each other</h4>
     <!-- <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input> -->
     <v-chart ref="vchart" class="chart" :option="chart" />
   </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="chart-container">
-    <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input>
+    <!-- <el-input class="graphSearch" v-model="searchTerm" placeholder="Search for node"></el-input> -->
     <v-chart ref="vchart" class="chart" :option="chart" />
   </div>
 </template>
@@ -180,8 +180,8 @@ export default defineComponent({
     const option = ref({
       backgroundColor: '#fff',
       title: {
-        text: 'Company Relations',
-        subtext: 'See how companies relate with each other',
+        // text: 'Company Relations',
+        // subtext: 'See how companies relate with each other',
         top: 'top',
         left: 'center',
         color: '#000'

@@ -24,9 +24,7 @@ export default {
     }
   },
   mounted () {
-    if (this.$route.params.graphType) {
-      this.title = `${this.$route.params.graphType} Company Competition Graph`
-    }
+    this.title = 'Searched Company Graph'
   },
   methods: {},
   components: { PartialGraph }
